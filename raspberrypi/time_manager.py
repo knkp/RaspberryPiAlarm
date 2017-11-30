@@ -27,14 +27,11 @@ class TimeManager(object):
 
 	def shouldWakeUp(self):
 		try:
-			if self.TimeNow < self.SetWakeTime: 
-				if self.TimeNow <= self.SetSleepTime:
-					return True
-				else:
-					return False
-			
+			if self.TimeNow < self.SetWakeTime:
+				return False
+
 			elif self.TimeNow > self.SetWakeTime:
-				if self.TimeNow <= self.SetSleepTime:
+				if self.TimeNow < self.SetSleepTime:
 					return True
 				else:
 					return False

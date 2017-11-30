@@ -2,7 +2,7 @@ from serial import Serial, SerialException
 from time import sleep
 
 class ArduinoLink(object):
-	def __init__(self, _Port='/dev/ttyUSB0', _Baud = 15200):
+	def __init__(self, _Port='/dev/ttyACM0', _Baud = 115200):
 		self.Connected = False
 		try:
 			self.ArduinoSer = Serial(_Port, _Baud)

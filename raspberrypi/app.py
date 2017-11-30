@@ -6,7 +6,7 @@ import time
 # 30 second timeout by default
 
 class App(TimeManager):
-	def __init__(self, _Timeout = 60, _WakeHour = 7, _WakeMinute = 0, _SleepHour = 23, _SleepMinute = 00):
+	def __init__(self, _Timeout = 60, _WakeHour = 6, _WakeMinute = 30, _SleepHour = 23, _SleepMinute = 59):
 		TimeManager.__init__(self)
 		self.ShouldRun = True
 		self.Link = ArduinoLink()
@@ -19,10 +19,10 @@ class App(TimeManager):
 	def routine(self):
 		self.getCurrentTime()
 		if self.shouldWakeUp():
-			print 'off'
+			#print 'off'
 			self.Link.turnOff()
 		else:
-			print 'on'
+			#print 'on'
 			self.Link.turnOn()
 
 		# reset for the next round
