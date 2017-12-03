@@ -21,11 +21,18 @@ class App(TimeManager, Thread):
 		# these members handle monitoring related tasks
 		self.Status = "constructor"
 
+	### Changing it up a bit to use the 'with' statement to automatically close down the worker threads on 
+	### the event that an exception occurs
+
+	def __enter__(self):
 		# now start the worker thread
 		self.start()
 
 		# and while that's going look for user input
 		self.handleInput()
+			
+	def __exit__(self):
+		self.ShouldRun = False
 
 	def run(self):
 		while self.ShouldRun:
@@ -38,6 +45,21 @@ class App(TimeManager, Thread):
 				self.Status = "on"
 				self.Link.turnOn()
 
+	
+	def getWakeTimeFromUser(self):
+		print "Hour: "
+		InputHour = raw_input()
+		print "Minute: " 
+		InputMin = raw_input()
+		self.setWakeTime(_Hour=InputHour, _Minute=InputMin)
+
+	def getSleepTimeFromUser(self):
+		print "Hour: "
+		InputHour = int(raw_input())
+		print "Minute: " 
+		InputMin = int(raw_input())
+		self.setSleepTime(_Hour=InputHour, _Minute=InputMin)
+
 	def handleInput(self):	
 		while self.ShouldRun:
 			self.UserMsg = raw_input()
@@ -46,9 +68,24 @@ class App(TimeManager, Thread):
 				self.ShouldRun = False
 			elif self.UserMsg == "status":
 				print "Current Status: " + self.Status
+			elif self.UserMsg == "waketime":
+				print "Current WakeTime: " + str(self.SetWakeTime)
+			elif self.UserMsg == "set waketime":
+				self.getWakeTimeFromUser()
+			elif self.UserMsg == "sleeptime":
+				print "Current SleepTime: " + str(self.SetSleepTime)
+			elif self.UserMsg == "set sleeptime":
+				self.getSleepTimeFromUser()
 			else:
-				print "options are:\n'status' - shows whether or not the fan is on or off\n'shutdown' - turn off the app"
+				print "options are:"
+				print "'status' - shows whether or not the fan is on or off"
+				print "'shutdown' - turn off the app"
+				print "'waketime' - show the current waketime"
+				print "'set waketime' - change the minute and hour of the waketime"
+				print "'sleeptime' - show the current sleeptime"
+				print "'set sleeptime' - change the minute and hour of the sleeptime"
 
 
 if __name__ == '__main__':
-	app = App(_Timeout=1)
+	with App(_Timeout=60) as app:
+		print 'System stopped'
