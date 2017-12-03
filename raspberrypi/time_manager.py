@@ -5,9 +5,11 @@ import pytz
 class TimeManager(object):
 	def __init__(self, _TZ='US/Eastern'):
 		self.ThisZone = timezone(_TZ)
+		self.Today = 1
 	
 	def getCurrentTime(self):
 		self.TimeNow = self.returnLocalTime()
+		self.updateDay()
 
 	def setWakeTime(self, _Hour=12, _Minute=30):
 		Time = self.returnLocalTime()
@@ -24,6 +26,11 @@ class TimeManager(object):
 		UtcDT = pytz.UTC.localize(Time)
 		LocDT = UtcDT.astimezone(self.ThisZone)
 		return LocDT
+
+	def updateDay(self):
+		if self.Today != self.TimeNow.day:
+			self.SetWakeTime.replace(day = self.TimeNow.day)
+			self.SetSleepTime.replace(day = self.TimeNow.day)
 
 	def shouldWakeUp(self):
 		try:
