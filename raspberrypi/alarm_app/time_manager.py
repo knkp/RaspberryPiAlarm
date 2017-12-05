@@ -9,7 +9,6 @@ class TimeManager(object):
 	
 	def getCurrentTime(self):
 		self.TimeNow = self.returnLocalTime()
-		self.updateDay()
 
 	def setWakeTime(self, _Hour=12, _Minute=30):
 		Time = self.returnLocalTime()
@@ -27,24 +26,38 @@ class TimeManager(object):
 		LocDT = UtcDT.astimezone(self.ThisZone)
 		return LocDT
 
-	def updateDay(self):
-		if self.Today != self.TimeNow.day:
-			self.SetWakeTime.replace(day = self.TimeNow.day)
-			self.SetSleepTime.replace(day = self.TimeNow.day)
-
 	def shouldWakeUp(self):
 		try:
-			if self.TimeNow < self.SetWakeTime:
-				return False
+			hours = False
+			minutes = False
 
-			elif self.TimeNow > self.SetWakeTime:
-				if self.TimeNow < self.SetSleepTime:
-					return True
+			if self.TimeNow.hour < self.SetWakeTime.hour:
+				hours =  False
+
+			elif self.TimeNow.hour > self.SetWakeTime.hour:
+				if self.TimeNow.hour < self.SetSleepTime.hour:
+					hours = True
 				else:
-					return False
+					hours = False
+			
+			if self.TimeNow.minute < self.SetWakeTime.minute:
+				minutes =  False
+
+			elif self.TimeNow.minute > self.SetWakeTime.minute:
+				if self.TimeNow.minute < self.SetSleepTime.minute:
+					minutes = True
+				else:
+					minutes = False
+
+			if hours:
+				if minutes:
+					return True
+
+			return False
 
 		except AttributeError:
 			return -1
+
 
 if __name__ == "__main__":
 	TM = TimeManager()
