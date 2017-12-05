@@ -1,0 +1,3 @@
+Don't forget to set the environment variable:
+PI_ALARM_DB
+to the database file path
