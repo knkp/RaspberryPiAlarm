@@ -31,7 +31,7 @@ class App(TimeManager, Thread):
 		# and while that's going look for user input
 		self.handleInput()
 			
-	def __exit__(self):
+	def __exit__(self, type, value, tb):
 		self.ShouldRun = False
 
 	def run(self):
@@ -87,5 +87,6 @@ class App(TimeManager, Thread):
 
 
 if __name__ == '__main__':
-	with App(_Timeout=60) as app:
-		print 'System stopped'
+	Timeout = 60
+	with App(_Timeout=Timeout) as app:
+		print 'System stopped, waiting for thread to exit, timeout: ' + str(Timeout)

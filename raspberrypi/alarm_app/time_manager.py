@@ -26,38 +26,24 @@ class TimeManager(object):
 		LocDT = UtcDT.astimezone(self.ThisZone)
 		return LocDT
 
+	def floatTime(self, TimeToConv):
+		Hour_flt = float(TimeToConv.hour)
+		Hour_percent = TimeToConv.minute/60
+		Time_flt = Hour_flt + Hour_percent
+		return Time_flt 
+
 	def shouldWakeUp(self):
-		try:
-			hours = False
-			minutes = False
+		TimeNow_flt = self.floatTime(self.TimeNow)
+		SleepTime_flt = self.floatTime(self.SetSleepTime)
+		WakeTime_flt = self.floatTime(self.SetWakeTime)
 
-			if self.TimeNow.hour < self.SetWakeTime.hour:
-				hours =  False
-
-			elif self.TimeNow.hour > self.SetWakeTime.hour:
-				if self.TimeNow.hour < self.SetSleepTime.hour:
-					hours = True
-				else:
-					hours = False
-			
-			if self.TimeNow.minute < self.SetWakeTime.minute:
-				minutes =  False
-
-			elif self.TimeNow.minute > self.SetWakeTime.minute:
-				if self.TimeNow.minute < self.SetSleepTime.minute:
-					minutes = True
-				else:
-					minutes = False
-
-			if hours:
-				if minutes:
-					return True
-
+		if TimeNow_flt < WakeTime_flt:
 			return False
-
-		except AttributeError:
-			return -1
-
+		elif TimeNow_flt > WakeTime_flt:
+			if TimeNow_flt < SleepTime_flt:
+				return True
+			else:
+				return False
 
 if __name__ == "__main__":
 	TM = TimeManager()
