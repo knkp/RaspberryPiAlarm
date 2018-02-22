@@ -6,6 +6,7 @@ class TimeManager(object):
 	def __init__(self, _TZ='US/Eastern'):
 		self.ThisZone = timezone(_TZ)
 		self.Today = 1
+		self.WatchTimes = False
 	
 	def getCurrentTime(self):
 		self.TimeNow = self.returnLocalTime()
@@ -28,7 +29,7 @@ class TimeManager(object):
 
 	def floatTime(self, TimeToConv):
 		Hour_flt = float(TimeToConv.hour)
-		Hour_percent = TimeToConv.minute/60
+		Hour_percent = float(TimeToConv.minute)/60.0
 		Time_flt = Hour_flt + Hour_percent
 		return Time_flt 
 
@@ -36,6 +37,13 @@ class TimeManager(object):
 		TimeNow_flt = self.floatTime(self.TimeNow)
 		SleepTime_flt = self.floatTime(self.SetSleepTime)
 		WakeTime_flt = self.floatTime(self.SetWakeTime)
+
+		if self.WatchTimes:
+			print "\n"
+			print 'TimeNow: ' + str(TimeNow_flt)
+			print 'SleepTime: ' + str(SleepTime_flt)
+			print 'WakeTime: ' + str(WakeTime_flt)
+			print "\n"
 
 		if TimeNow_flt < WakeTime_flt:
 			return False

@@ -48,9 +48,9 @@ class App(TimeManager, Thread):
 	
 	def getWakeTimeFromUser(self):
 		print "Hour: "
-		InputHour = raw_input()
+		InputHour = int(raw_input())
 		print "Minute: " 
-		InputMin = raw_input()
+		InputMin = int(raw_input())
 		self.setWakeTime(_Hour=InputHour, _Minute=InputMin)
 
 	def getSleepTimeFromUser(self):
@@ -76,6 +76,10 @@ class App(TimeManager, Thread):
 				print "Current SleepTime: " + str(self.SetSleepTime)
 			elif self.UserMsg == "set sleeptime":
 				self.getSleepTimeFromUser()
+			elif self.UserMsg == "watch times":
+				self.WatchTimes = True
+			elif self.UserMsg == "stop watching times":
+				self.WatchTimes = False
 			else:
 				print "options are:"
 				print "'status' - shows whether or not the fan is on or off"
@@ -84,6 +88,8 @@ class App(TimeManager, Thread):
 				print "'set waketime' - change the minute and hour of the waketime"
 				print "'sleeptime' - show the current sleeptime"
 				print "'set sleeptime' - change the minute and hour of the sleeptime"
+				print "'watch times' - watch, as the times are processed"
+				print "'stop watching times' - quit watching time logic"
 
 
 if __name__ == '__main__':
